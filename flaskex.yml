@@ -4,16 +4,9 @@
       apt: update_cache=true
 
     - name: Installs necessary packages
-      apt: pkg={{ item }} state=latest
-      with_items:
-        - python3
-        - git
-
-    - name: Install and upgrade pip
-      pip:
-        name: pip
-        extra_args: --upgrade
-        executable: pip3
+      apt: 
+        pkg: ['python3-pip', 'git']
+        state: latest
 
     - name: Deploy our awesome application
       git: repo=https://github.com/anfederico/flaskex.git dest=/Flaskex
@@ -24,6 +17,5 @@
         requirements: /Flaskex/requirements.txt
     
     - name: run Flaskex
-      command: python3 /Flaskex/app.py
-      async: True
-      poll: 0
+      command: nohup python3 /Flaskex/app.py &
+
